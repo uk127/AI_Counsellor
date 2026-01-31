@@ -207,16 +207,16 @@ const UniversityDiscovery = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Header */}
-      <div className="mb-8">
-        <div className="flex items-center justify-between">
+      <div className="mb-6">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">University Discovery</h1>
-            <p className="text-gray-600 dark:text-gray-400 mt-1">Find universities that match your profile and goals</p>
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100">University Discovery</h1>
+            <p className="text-gray-600 dark:text-gray-400 mt-1 text-sm sm:text-base">Find universities that match your profile and goals</p>
           </div>
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="w-full sm:w-auto">
             <button
               onClick={() => navigate('/ai')}
-              className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors flex items-center"
+              className="w-full sm:w-auto px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors flex items-center justify-center sm:justify-start"
             >
               <Bot className="mr-2 h-5 w-5" />
               Get AI Recommendations
@@ -231,7 +231,7 @@ const UniversityDiscovery = () => {
         <div className="md:hidden mb-4">
           <button
             onClick={() => setShowFilters(!showFilters)}
-            className="w-full flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg"
+            className="w-full flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg active:bg-gray-200 dark:active:bg-gray-600 transition-colors"
           >
             <div className="flex items-center">
               <Filter className="h-5 w-5 text-gray-600 dark:text-gray-400 mr-2" />
@@ -329,6 +329,25 @@ const UniversityDiscovery = () => {
           </div>
         </div>
 
+        {/* Mobile Filter Actions */}
+        <div className="md:hidden mt-4 flex space-x-2">
+          <button
+            onClick={() => {
+              setFilters({ country: '', budget: '', ranking: '', acceptanceRate: '', search: '' })
+              setSelectedCategories(['Dream', 'Target', 'Safe'])
+            }}
+            className="flex-1 px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600"
+          >
+            Clear All
+          </button>
+          <button
+            onClick={() => setShowFilters(false)}
+            className="flex-1 px-3 py-2 text-sm bg-purple-600 text-white rounded-lg hover:bg-purple-700"
+          >
+            Apply Filters
+          </button>
+        </div>
+
         {/* Category Filters */}
         <div className="mt-4 border-t border-gray-200 dark:border-gray-700 pt-4">
           <div className="flex items-center space-x-4">
@@ -412,62 +431,66 @@ const UniversityDiscovery = () => {
             const isLocked = university.isLocked
 
             return (
-              <div key={university.id} className="p-6 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
-                <div className="flex items-start justify-between">
+              <div key={university.id} className="p-4 sm:p-6 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
                   {/* Left Side */}
-                  <div className="flex-1">
-                    <div className="flex items-center space-x-3 mb-2">
-                      <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">{university.name}</h3>
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${getUniversityCategoryColor(category)}`}>
-                        {category}
-                      </span>
-                      {isLocked && (
-                        <span className="px-2 py-1 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400 flex items-center">
-                          <Lock className="h-3 w-3 mr-1" />
-                          Locked
+                  <div className="flex-1 min-w-0">
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-3">
+                      <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 break-words">
+                        {university.name}
+                      </h3>
+                      <div className="flex flex-wrap gap-2">
+                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${getUniversityCategoryColor(category)}`}>
+                          {category}
                         </span>
-                      )}
+                        {isLocked && (
+                          <span className="px-2 py-1 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400 flex items-center">
+                            <Lock className="h-3 w-3 mr-1" />
+                            Locked
+                          </span>
+                        )}
+                      </div>
                     </div>
                     
-                    <div className="flex items-center space-x-4 text-sm text-gray-600 dark:text-gray-400 mb-3">
-                      <div className="flex items-center space-x-1">
-                        <Building2 className="h-4 w-4" />
-                        <span>{university.city}, {university.country}</span>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-2 mb-3">
+                      <div className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
+                        <Building2 className="h-4 w-4 flex-shrink-0" />
+                        <span className="truncate">{university.city}, {university.country}</span>
                       </div>
-                      <div className="flex items-center space-x-1">
-                        <IndianRupee className="h-4 w-4" />
+                      <div className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
+                        <IndianRupee className="h-4 w-4 flex-shrink-0" />
                         <span>₹{university.cost?.toLocaleString()}/year</span>
                       </div>
                       {university.ranking && (
-                        <div className="flex items-center space-x-1">
-                          <Star className="h-4 w-4" />
+                        <div className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
+                          <Star className="h-4 w-4 flex-shrink-0" />
                           <span>#{university.ranking}</span>
                         </div>
                       )}
                       {university.acceptanceRate && (
-                        <div className="flex items-center space-x-1">
-                          <Target className="h-4 w-4" />
+                        <div className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
+                          <Target className="h-4 w-4 flex-shrink-0" />
                           <span>{university.acceptanceRate}% acceptance</span>
                         </div>
                       )}
                     </div>
 
                     {university.description && (
-                      <p className="text-gray-700 dark:text-gray-300 mb-3 line-clamp-2">{university.description}</p>
+                      <p className="text-gray-700 dark:text-gray-300 mb-3 text-sm line-clamp-2">{university.description}</p>
                     )}
 
                     {/* Requirements */}
-                    <div className="flex items-center space-x-4 text-sm">
+                    <div className="flex flex-wrap gap-3 text-sm">
                       <span className={`font-medium ${getFitScoreColor(fitScore)}`}>
                         {fitScore}% Fit Score
                       </span>
                       {university.requirements?.gpa && (
-                        <span className="text-gray-600 dark:text-gray-400">
+                        <span className="text-gray-600 dark:text-gray-400 text-sm">
                           GPA: {university.requirements.gpa}+
                         </span>
                       )}
                       {university.requirements?.ielts && (
-                        <span className="text-gray-600 dark:text-gray-400">
+                        <span className="text-gray-600 dark:text-gray-400 text-sm">
                           IELTS: {university.requirements.ielts}+
                         </span>
                       )}
@@ -475,21 +498,22 @@ const UniversityDiscovery = () => {
                   </div>
 
                   {/* Right Side */}
-                  <div className="flex flex-col space-y-3 ml-4">
+                  <div className="lg:ml-4 lg:self-center">
                     {/* Actions */}
-                    <div className="flex space-x-2">
+                    <div className="flex flex-col sm:flex-row gap-2 mb-3">
                       {!isLocked && (
                         <>
                           {!isShortlisted ? (
                             <button
                               onClick={() => handleShortlist(university.id)}
-                              className="btn-secondary text-sm flex items-center"
+                              className="flex items-center justify-center px-3 py-2 text-sm bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-colors min-w-[120px]"
                             >
-                              <Plus className="h-4 w-4 mr-1" />
+                              <Plus className="h-4 w-4 mr-2" />
                               Shortlist
                             </button>
                           ) : (
-                            <button className="btn-secondary text-sm opacity-50 cursor-not-allowed">
+                            <button className="flex items-center justify-center px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 rounded-lg cursor-not-allowed min-w-[120px]">
+                              <CheckCircle className="h-4 w-4 mr-2" />
                               Shortlisted
                             </button>
                           )}
@@ -497,7 +521,7 @@ const UniversityDiscovery = () => {
                           <button
                             onClick={() => handleLock(university.id)}
                             disabled={isLocked}
-                            className={`px-4 py-2 rounded-lg text-white text-sm font-medium ${
+                            className={`flex items-center justify-center px-3 py-2 text-sm text-white rounded-lg transition-colors min-w-[140px] ${
                               isLocked 
                                 ? 'bg-gray-400 cursor-not-allowed' 
                                 : 'bg-green-600 hover:bg-green-700'
@@ -510,27 +534,27 @@ const UniversityDiscovery = () => {
                       
                       <button
                         onClick={() => navigate(`/universities/${university.id}`)}
-                        className="btn-secondary text-sm flex items-center"
+                        className="flex items-center justify-center px-3 py-2 text-sm bg-purple-50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-300 rounded-lg hover:bg-purple-100 dark:hover:bg-purple-900/40 transition-colors min-w-[120px]"
                       >
-                        <Eye className="h-4 w-4 mr-1" />
+                        <Eye className="h-4 w-4 mr-2" />
                         View Details
                       </button>
                     </div>
 
                     {/* Fit Analysis */}
-                    <div className="text-xs text-gray-500 dark:text-gray-400">
+                    <div className="text-xs text-gray-500 dark:text-gray-400 text-center sm:text-left">
                       {fitScore >= 80 ? (
-                        <div className="flex items-center space-x-1 text-green-600 dark:text-green-400">
+                        <div className="flex items-center justify-center sm:justify-start space-x-1 text-green-600 dark:text-green-400">
                           <TrendingUp className="h-3 w-3" />
                           <span>Excellent fit</span>
                         </div>
                       ) : fitScore >= 60 ? (
-                        <div className="flex items-center space-x-1 text-yellow-600 dark:text-yellow-400">
+                        <div className="flex items-center justify-center sm:justify-start space-x-1 text-yellow-600 dark:text-yellow-400">
                           <TrendingUp className="h-3 w-3" />
                           <span>Good fit</span>
                         </div>
                       ) : (
-                        <div className="flex items-center space-x-1 text-red-600 dark:text-red-400">
+                        <div className="flex items-center justify-center sm:justify-start space-x-1 text-red-600 dark:text-red-400">
                           <TrendingDown className="h-3 w-3" />
                           <span>Risky fit</span>
                         </div>
@@ -551,15 +575,27 @@ const UniversityDiscovery = () => {
             <p className="text-gray-600 dark:text-gray-400 mb-4">
               Try adjusting your filters or search criteria to find more options.
             </p>
-            <button
-              onClick={() => {
-                setFilters({ country: '', budget: '', ranking: '', acceptanceRate: '', search: '' })
-                setSelectedCategories(['Dream', 'Target', 'Safe'])
-              }}
-              className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
-            >
-              Clear Filters
-            </button>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <button
+                onClick={() => {
+                  setFilters({ country: '', budget: '', ranking: '', acceptanceRate: '', search: '' })
+                  setSelectedCategories(['Dream', 'Target', 'Safe'])
+                }}
+                className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+              >
+                Clear Filters
+              </button>
+              <button
+                onClick={() => navigate('/ai')}
+                className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                Get AI Recommendations
+              </button>
+            </div>
+            {/* Mobile hint */}
+            <div className="mt-6 text-xs text-gray-400 dark:text-gray-500 hidden md:block">
+              💡 Tip: Use the filters above to narrow down your search or try our AI recommendations for personalized suggestions!
+            </div>
           </div>
         )}
       </div>

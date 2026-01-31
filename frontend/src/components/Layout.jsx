@@ -47,7 +47,7 @@ const Layout = ({ children }) => {
       {/* Mobile sidebar */}
       <div className={`fixed inset-0 z-40 md:hidden ${sidebarOpen ? 'block' : 'hidden'}`}>
         <div className="fixed inset-0 bg-gray-600 opacity-75" onClick={() => setSidebarOpen(false)}></div>
-        <div className="relative flex-1 flex flex-col max-w-xs w-full bg-white dark:bg-gray-800">
+        <div className="relative flex-1 flex flex-col max-w-xs w-full bg-white dark:bg-gray-800 min-h-screen">
           <div className="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
             <div className="flex items-center justify-between px-4">
               <h1 className="text-xl font-bold text-gray-900 dark:text-gray-100">AI Counsellor</h1>
@@ -58,19 +58,22 @@ const Layout = ({ children }) => {
                 <X className="h-6 w-6" />
               </button>
             </div>
-            <nav className="mt-5 px-2 space-y-1">
+            <nav className="mt-5 px-4 space-y-2">
               {navigation.map((item) => (
                 <Link
                   key={item.name}
                   to={item.href}
-                  className={`group flex items-center px-2 py-2 text-base font-medium rounded-md ${
+                  className={`group flex items-center justify-between px-4 py-4 text-base font-medium rounded-lg transition-all duration-200 ${
                     location.pathname === item.href
-                      ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400'
-                      : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100'
+                      ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400 shadow-sm'
+                      : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white'
                   }`}
                 >
-                  <item.icon className="mr-4 h-6 w-6" />
-                  {item.name}
+                  <div className="flex items-center">
+                    <item.icon className="mr-4 h-6 w-6 flex-shrink-0" />
+                    <span className="font-medium">{item.name}</span>
+                  </div>
+                  <ChevronRight className="h-5 w-5 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
                 </Link>
               ))}
             </nav>

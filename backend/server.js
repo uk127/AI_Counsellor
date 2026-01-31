@@ -109,9 +109,14 @@ async function startServer() {
     await sequelize.authenticate()
     console.log('Database connected successfully')
 
-    // Sync database models
-    await sequelize.sync({ alter: true })
-    console.log('Database synchronized')
+    // Sync database models (safer for production)
+    if (process.env.NODE_ENV === 'development') {
+      await sequelize.sync({ alter: true })
+      console.log('Database synchronized (development mode with alter)')
+    } else {
+      await sequelize.sync()
+      console.log('Database synchronized (production mode)')
+    }
 
     // Start server
     app.listen(PORT, () => {
